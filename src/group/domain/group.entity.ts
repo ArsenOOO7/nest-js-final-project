@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { GroupCategory } from './group-category.enum';
 import { GroupType } from './group-type.enum';
 
@@ -19,13 +19,13 @@ export class Group {
   @Column({
     type: 'enum',
     enum: GroupCategory,
-    name: 'category'
+    name: 'category',
   })
   category: GroupCategory;
   @Column({
     type: 'enum',
     enum: GroupType,
-    name: 'type'
+    name: 'type',
   })
   type: GroupType;
 
