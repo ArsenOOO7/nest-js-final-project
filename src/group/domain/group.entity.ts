@@ -1,12 +1,10 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 import { GroupCategory } from './group-category.enum';
 import { GroupType } from './group-type.enum';
+import { BaseEntity } from '../../common/domain/base.entity';
 
 @Entity()
-export class Group {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Group extends BaseEntity {
   @Column({ name: 'specialty_short_name' })
   specialtyShortName: string;
   @Column({ name: 'academic_year' })

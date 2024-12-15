@@ -1,11 +1,9 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 import { Role } from './role.enum';
+import { BaseEntity } from '../../common/domain/base.entity';
 
 @Entity('app_user')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends BaseEntity {
   @Index()
   @Column({ unique: true, name: 'email' })
   email: string;
