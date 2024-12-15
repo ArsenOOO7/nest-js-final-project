@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectCreateRequest } from './dto/subject-create-request';
 import { SubjectUpdateRequest } from './dto/subject-update-request';
 import { BaseService } from '../common/base.service';
-import { request } from 'express';
 
 @Injectable()
 export class SubjectService extends BaseService<Subject> {

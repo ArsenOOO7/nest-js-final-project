@@ -9,7 +9,6 @@ import { GroupUpdateRequest } from './dto/group-update-request';
 import { SearchRequest } from '../common/dto/search-request';
 import { SearchResponse } from '../common/dto/search-response';
 import { BaseService } from '../common/base.service';
-import { request } from 'express';
 
 @Injectable()
 export class GroupService extends BaseService<Group> {
