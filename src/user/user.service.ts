@@ -4,7 +4,7 @@ import { User } from './domain/user.entity';
 import { UserCreateRequest } from './dto/user-create-request';
 import { UserResponseDto } from './dto/user-response-dto';
 import { UserMapper } from './mapper/user.mapper';
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { UserUpdateRequest } from './dto/user-update-request';
 import { NotFoundError } from 'rxjs';
 import { SearchRequest } from '../common/dto/search-request';
@@ -18,7 +18,6 @@ export class UserService {
   ) {}
 
   public async create(request: UserCreateRequest): Promise<UserResponseDto> {
-    console.log(request.firstName);
     const user: User = await this.repository.save({ ...request });
     return this.mapper.asUserResponseDto(user);
   }

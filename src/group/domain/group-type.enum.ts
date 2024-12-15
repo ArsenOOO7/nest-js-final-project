@@ -1,0 +1,5 @@
+export enum GroupType {
+  FULL_GROUP = 'FULL_GROUP',
+  SUB_GROUP = 'SUB_GROUP',
+  COLLECTIVE_GROUP = 'COLLECTIVE_GROUP',
+}
