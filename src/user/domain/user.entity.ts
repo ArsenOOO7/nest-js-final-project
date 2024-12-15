@@ -1,25 +1,26 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from './role.enum';
 
-@Entity('app_user')
+@Entity("app_user")
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Index()
-  @Column({ unique: true })
+  @Column({ unique: true, name: 'email' })
   email: string;
-  @Column()
+  @Column({ name: 'first_name' })
   firstName: string;
-  @Column()
+  @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column()
+  @Column({ name: 'password' })
   password: string;
 
   @Column({
-    type: 'enum',
+    type: "enum",
     enum: Role,
+    name: "role"
   })
   role: Role;
 }

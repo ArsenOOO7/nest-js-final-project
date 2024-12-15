@@ -7,11 +7,11 @@ export class Group {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ name: 'specialty_short_name' })
   specialtyShortName: string;
-  @Column()
+  @Column({ name: 'academic_year' })
   academicYear: number;
-  @Column()
+  @Column({ name: 'number' })
   number: number;
 
   // additionally, it needs references to parent id, or have collection of groups - for SUB_GROUP & COLLECTIVE_GROUP correspondingly
@@ -19,15 +19,17 @@ export class Group {
   @Column({
     type: 'enum',
     enum: GroupCategory,
+    name: 'category'
   })
   category: GroupCategory;
   @Column({
     type: 'enum',
     enum: GroupType,
+    name: 'type'
   })
   type: GroupType;
 
   @Index() // bad idea, the best - use elasticsearch for text searching purpose.
-  @Column()
+  @Column({ name: 'name' })
   name: string;
 }

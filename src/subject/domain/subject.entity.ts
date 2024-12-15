@@ -4,6 +4,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Subject {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column()
+  @Column({ name: 'name' })
   name: string;
 }
