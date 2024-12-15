@@ -8,37 +8,33 @@ import { GroupMapper } from './mapper/group.mapper';
 import { GroupUpdateRequest } from './dto/group-update-request';
 import { SearchRequest } from '../common/dto/search-request';
 import { SearchResponse } from '../common/dto/search-response';
+import { BaseService } from '../common/base.service';
+import { request } from 'express';
 
 @Injectable()
-export class GroupService {
+export class GroupService extends BaseService<Group> {
   constructor(
     @InjectRepository(Group) private readonly repository: Repository<Group>,
     private readonly mapper: GroupMapper,
-  ) {}
+  ) {
+    super();
+  }
 
   public async create(request: GroupCreateRequest): Promise<GroupResponseDto> {
     return this.mapper.asGroupResponseDto(
-      await this.repository.save({ ...request }),
+      await super.createInternal({ ...request, id: undefined }),
     );
   }
 
   public async update(request: GroupUpdateRequest): Promise<GroupResponseDto> {
-    const group: Group = await this.repository.findOne({
-      where: { id: request.id },
-    });
+    const group: Group = await this.getById(request.id);
     this.mapper.applyGroupUpdateRequest(group, request);
-    return this.mapper.asGroupResponseDto(await this.repository.save(group));
+    return this.mapper.asGroupResponseDto(await super.updateInternal(group));
   }
 
-  public async getById(id: string): Promise<GroupResponseDto> {
-    return this.mapper.asGroupResponseDto(
-      await this.repository.findOne({
-        where: { id: id },
-      }),
-    );
-  }
-
-  public async getList(request: SearchRequest): Promise<SearchResponse<GroupResponseDto>>{
+  public async getList(
+    request: SearchRequest,
+  ): Promise<SearchResponse<GroupResponseDto>> {
     const [groups, total]: [Group[], number] =
       await this.repository.findAndCount({
         take: request.limit,
@@ -51,10 +47,11 @@ export class GroupService {
     };
   }
 
-  public async delete(id: string): Promise<void> {
-    const group: Group = await this.repository.findOne({
-      where: { id: id },
-    });
-    await this.repository.delete(group.id);
+  protected getEntityName(): string {
+    return Group.name;
+  }
+
+  protected getRepository(): Repository<Group> {
+    return this.repository;
   }
 }

@@ -4,34 +4,36 @@ import { Subject } from './domain/subject.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubjectCreateRequest } from './dto/subject-create-request';
 import { SubjectUpdateRequest } from './dto/subject-update-request';
+import { BaseService } from '../common/base.service';
+import { request } from 'express';
 
 @Injectable()
-export class SubjectService {
+export class SubjectService extends BaseService<Subject> {
   constructor(
     @InjectRepository(Subject) private readonly repository: Repository<Subject>,
-  ) {}
+  ) {
+    super();
+  }
 
   public async create(request: SubjectCreateRequest): Promise<Subject> {
-    return this.repository.save({ ...request });
+    return super.createInternal({ ...request, id: undefined });
   }
 
   public async update(request: SubjectUpdateRequest): Promise<Subject> {
-    const subject: Subject = await this.repository.findOne({
-      where: { id: request.id },
-    });
+    const subject: Subject = await this.getById(request.id);
     subject.name = request.name;
-    return this.repository.save(subject);
+    return super.updateInternal(subject);
   }
 
   public async getList(): Promise<Subject[]> {
     return await this.repository.find();
   }
 
-  public async delete(id: string): Promise<void> {
-    const subject: Subject = await this.repository.findOne({
-      where: { id: id },
-    });
+  protected getEntityName(): string {
+    return Subject.name;
+  }
 
-    await this.repository.delete(subject.id);
+  protected getRepository(): Repository<Subject> {
+    return this.repository;
   }
 }

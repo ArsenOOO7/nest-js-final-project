@@ -14,17 +14,17 @@ export class SubjectController {
   }
 
   @Post()
-  public create(@Body() request: SubjectCreateRequest): Promise<Subject> {
-    return this.subjectService.create(request);
+  public async create(@Body() request: SubjectCreateRequest): Promise<Subject> {
+    return await this.subjectService.create(request);
   }
 
   @Put()
-  public update(@Body() request: SubjectUpdateRequest): Promise<Subject> {
-    return this.subjectService.update(request);
+  public async update(@Body() request: SubjectUpdateRequest): Promise<Subject> {
+    return await this.subjectService.update(request);
   }
 
   @Delete(':id')
-  public delete(id: string): void {
-    this.subjectService.delete(id);
+  public async delete(id: string): Promise<void> {
+    await this.subjectService.delete(id);
   }
 }

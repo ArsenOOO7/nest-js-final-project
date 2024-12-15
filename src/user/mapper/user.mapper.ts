@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../domain/user.entity';
 import { UserResponseDto } from '../dto/user-response-dto';
 import { UserUpdateRequest } from '../dto/user-update-request';
+import { UserCreateRequest } from '../dto/user-create-request';
 
 @Injectable()
 export class UserMapper {
@@ -17,6 +18,13 @@ export class UserMapper {
 
   public asUserResponseDtos(users: User[]): UserResponseDto[] {
     return users.map(this.asUserResponseDto);
+  }
+
+  public asUser(request: UserCreateRequest): User {
+    return {
+      ...request,
+      id: undefined,
+    };
   }
 
   public applyUserUpdateRequest(user: User, request: UserUpdateRequest): void {
