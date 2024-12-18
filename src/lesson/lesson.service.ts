@@ -72,7 +72,9 @@ export class LessonService extends BaseService<Lesson> {
   public async getByTeacher(request: LessonBoardSearchTeacherRequest): Promise<LessonBoardResponseDto[]> {
     const lessons: Lesson[] = await this.repository
       .createQueryBuilder('lesson')
-      .innerJoin('teacher', 'teacher')
+      .innerJoinAndSelect('lesson.groups', 'group')
+      .innerJoinAndSelect('lesson.teacher', 'teacher')
+      .innerJoinAndSelect('lesson.subject', 'subject')
       .where(
         'teacher.id = :teacherId and lesson.lessonDate between :from and :to',
         {
@@ -83,7 +85,7 @@ export class LessonService extends BaseService<Lesson> {
       )
       .addOrderBy('lesson.lessonDate', 'ASC')
       .addOrderBy('lesson.number', 'ASC')
-      .getRawMany();
+      .getMany();
 
     return this.mapper.groupAndMap(lessons);
   }

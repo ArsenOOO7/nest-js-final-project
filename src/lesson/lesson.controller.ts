@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Post, Put } from "@nestjs/common";
 import { LessonService } from './lesson.service';
 import { LessonCreateRequest } from './dto/lesson-create.request';
 import { LessonResponseDto } from './dto/lesson-response.dto';
@@ -22,11 +22,13 @@ export class LessonController {
   }
 
   @Post('/list/group')
+  @HttpCode(200)
   public async getByGroup(@Body() request: LessonBoardSearchGroupRequest): Promise<LessonBoardResponseDto[]> {
     return await this.service.getByGroup(request);
   }
 
   @Post('/list/teacher')
+  @HttpCode(200)
   public async getByTeacher(@Body() request: LessonBoardSearchTeacherRequest): Promise<LessonBoardResponseDto[]> {
     return await this.service.getByTeacher(request);
   }
