@@ -1,5 +1,5 @@
 import { BaseEntity } from './domain/base.entity';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 
 export abstract class BaseService<T extends BaseEntity> {
   protected async createInternal(entity: T): Promise<T> {
@@ -11,11 +11,21 @@ export abstract class BaseService<T extends BaseEntity> {
   }
 
   public async getById(id: string): Promise<T> {
-    const entity: T = await this.getRepository().findOneBy( { id } as FindOptionsWhere<T>);
+    const entity: T = await this.getRepository().findOneBy({
+      id,
+    } as FindOptionsWhere<T>);
     if (!entity) {
       throw new Error(`Cannot find entity ${this.getEntityName()} by ${id}`);
     }
     return entity;
+  }
+
+  public async getAll(ids: string[]): Promise<T[]> {
+    return await this.getRepository().find({
+      where: {
+        id: In(ids),
+      } as any,
+    });
   }
 
   public async delete(id: string): Promise<void> {

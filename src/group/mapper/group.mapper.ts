@@ -17,4 +17,8 @@ export class GroupMapper {
     group.number = request.number;
     group.specialtyShortName = request.specialtyShortName;
   }
+
+  public asGroupResponseDtos(groups: Group[]): GroupResponseDto[] {
+    return groups.map(this.asGroupResponseDto);
+  }
 }

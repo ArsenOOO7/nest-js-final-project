@@ -4,6 +4,7 @@ import { DatabaseConfig } from './db/database.module';
 import { SubjectModule } from './subject/subject.module';
 import { UserModule } from './user/user.module';
 import { GroupModule } from './group/group.module';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { GroupModule } from './group/group.module';
     SubjectModule,
     UserModule,
     GroupModule,
+    LessonModule,
   ],
 })
 export class AppModule {}

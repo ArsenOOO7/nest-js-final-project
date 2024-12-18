@@ -9,5 +9,6 @@ import { GroupMapper } from './mapper/group.mapper';
   imports: [TypeOrmModule.forFeature([Group])],
   controllers: [GroupController],
   providers: [GroupService, GroupMapper],
+  exports: [GroupService, GroupMapper],
 })
 export class GroupModule {}
