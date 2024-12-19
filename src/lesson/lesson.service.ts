@@ -16,6 +16,7 @@ import { LessonBoardSearchGroupRequest } from './dto/board/lesson-board-search.g
 import { LessonBoardResponseDto } from './dto/board/lesson-board-response.dto';
 import { Between, Repository, SelectQueryBuilder } from "typeorm";
 import { LessonBoardSearchTeacherRequest } from './dto/board/lesson-board-search.teacher.request';
+import { Role } from "../user/domain/role.enum";
 
 @Injectable()
 export class LessonService extends BaseService<Lesson> {
@@ -30,8 +31,11 @@ export class LessonService extends BaseService<Lesson> {
   }
 
   public async create(request: LessonCreateRequest): Promise<LessonResponseDto> {
-    const groups: Group[] = await this.groupService.getAll(request.groupIds);
     const teacher: User = await this.userService.getById(request.teacherId);
+    if (Role.TEACHER != teacher.role) {
+      throw new Error('Teacher should have role "TEACHER".');
+    }
+    const groups: Group[] = await this.groupService.getAll(request.groupIds);
     const subject: Subject = await this.subjectService.getById(request.subjectId,);
 
     const lesson: Lesson = this.mapper.asLesson(request, teacher, subject, groups);

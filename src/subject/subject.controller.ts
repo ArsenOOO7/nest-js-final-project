@@ -1,9 +1,22 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  SetMetadata,
+  UseGuards,
+} from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { Subject } from './domain/subject.entity';
 import { SubjectCreateRequest } from './dto/subject-create-request';
 import { SubjectUpdateRequest } from './dto/subject-update-request';
+import { JwtAuthGuard } from '../auth/guard/jwt.auth.guard';
+import { RolesGuard } from '../auth/guard/role.guard';
 
+@SetMetadata('roles', ['ADMIN'])
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('/subject')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}

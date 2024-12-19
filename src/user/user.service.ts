@@ -4,11 +4,13 @@ import { User } from './domain/user.entity';
 import { UserCreateRequest } from './dto/user-create-request';
 import { UserResponseDto } from './dto/user-response-dto';
 import { UserMapper } from './mapper/user.mapper';
-import { Injectable } from '@nestjs/common';
+import { Injectable, SetMetadata, UseGuards } from "@nestjs/common";
 import { UserUpdateRequest } from './dto/user-update-request';
 import { SearchRequest } from '../common/dto/search-request';
 import { SearchResponse } from '../common/dto/search-response';
 import { BaseService } from '../common/base.service';
+import { JwtAuthGuard } from "../auth/guard/jwt.auth.guard";
+import { RolesGuard } from "../auth/guard/role.guard";
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -25,6 +27,8 @@ export class UserService extends BaseService<User> {
     );
   }
 
+  @SetMetadata('roles', ['ADMIN'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   public async update(request: UserUpdateRequest): Promise<UserResponseDto> {
     const user: User = await this.getById(request.id);
 
@@ -32,6 +36,8 @@ export class UserService extends BaseService<User> {
     return this.mapper.asUserResponseDto(await super.updateInternal(user));
   }
 
+  @SetMetadata('roles', ['ADMIN'])
+  @UseGuards(JwtAuthGuard, RolesGuard)
   public async getList(
     request: SearchRequest,
   ): Promise<SearchResponse<UserResponseDto>> {
@@ -45,6 +51,10 @@ export class UserService extends BaseService<User> {
       elements: this.mapper.asUserResponseDtos(users),
       total: total,
     };
+  }
+
+  public async getByEmail(email: string): Promise<User> {
+    return await this.repository.findOneBy({ email });
   }
 
   protected getEntityName(): string {
