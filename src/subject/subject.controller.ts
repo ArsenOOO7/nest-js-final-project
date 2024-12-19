@@ -5,7 +5,6 @@ import {
   Get,
   Post,
   Put,
-  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { SubjectService } from './subject.service';
@@ -13,9 +12,9 @@ import { Subject } from './domain/subject.entity';
 import { SubjectCreateRequest } from './dto/subject-create-request';
 import { SubjectUpdateRequest } from './dto/subject-update-request';
 import { JwtAuthGuard } from '../auth/guard/jwt.auth.guard';
-import { RolesGuard } from '../auth/guard/role.guard';
+import { Roles, RolesGuard } from "../auth/guard/role.guard";
 
-@SetMetadata('roles', ['ADMIN'])
+@Roles('ADMIN')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('/subject')
 export class SubjectController {

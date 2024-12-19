@@ -8,20 +8,20 @@ import { LessonBoardResponseDto } from './dto/board/lesson-board-response.dto';
 import { LessonBoardSearchTeacherRequest } from './dto/board/lesson-board-search.teacher.request';
 
 import { JwtAuthGuard } from '../auth/guard/jwt.auth.guard';
-import { RolesGuard } from '../auth/guard/role.guard';
+import { Roles, RolesGuard } from "../auth/guard/role.guard";
 
 @Controller('/lesson')
 export class LessonController {
   constructor(private readonly service: LessonService) {}
 
-  @SetMetadata('roles', ['ADMIN'])
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   public async create(@Body() request: LessonCreateRequest): Promise<LessonResponseDto> {
     return await this.service.create(request);
   }
 
-  @SetMetadata('roles', ['ADMIN'])
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put()
   public async update(@Body() request: LessonUpdateRequest): Promise<LessonResponseDto> {
@@ -40,14 +40,14 @@ export class LessonController {
     return await this.service.getByTeacher(request);
   }
 
-  @SetMetadata('roles', ['ADMIN'])
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('/:id')
   public async getById(id: string): Promise<LessonResponseDto> {
     return await this.service.findById(id);
   }
 
-  @SetMetadata('roles', ['ADMIN'])
+  @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   public async delete(id: string): Promise<void> {

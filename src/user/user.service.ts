@@ -9,8 +9,6 @@ import { UserUpdateRequest } from './dto/user-update-request';
 import { SearchRequest } from '../common/dto/search-request';
 import { SearchResponse } from '../common/dto/search-response';
 import { BaseService } from '../common/base.service';
-import { JwtAuthGuard } from "../auth/guard/jwt.auth.guard";
-import { RolesGuard } from "../auth/guard/role.guard";
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -27,8 +25,7 @@ export class UserService extends BaseService<User> {
     );
   }
 
-  @SetMetadata('roles', ['ADMIN'])
-  @UseGuards(JwtAuthGuard, RolesGuard)
+
   public async update(request: UserUpdateRequest): Promise<UserResponseDto> {
     const user: User = await this.getById(request.id);
 
@@ -36,8 +33,6 @@ export class UserService extends BaseService<User> {
     return this.mapper.asUserResponseDto(await super.updateInternal(user));
   }
 
-  @SetMetadata('roles', ['ADMIN'])
-  @UseGuards(JwtAuthGuard, RolesGuard)
   public async getList(
     request: SearchRequest,
   ): Promise<SearchResponse<UserResponseDto>> {
@@ -54,7 +49,7 @@ export class UserService extends BaseService<User> {
   }
 
   public async getByEmail(email: string): Promise<User> {
-    return await this.repository.findOneBy({ email });
+    return await this.repository.findOne({ where: { email: email } } );
   }
 
   protected getEntityName(): string {

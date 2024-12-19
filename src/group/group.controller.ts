@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Post, Put, SetMetadata, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Post, Put, UseGuards } from "@nestjs/common";
 import { GroupService } from './group.service';
 import { GroupCreateRequest } from './dto/group-create-request';
 import { GroupResponseDto } from './dto/group-response-dto';
@@ -7,9 +7,9 @@ import { SearchRequest } from '../common/dto/search-request';
 import { SearchResponse } from '../common/dto/search-response';
 
 import { JwtAuthGuard } from '../auth/guard/jwt.auth.guard';
-import { RolesGuard } from '../auth/guard/role.guard';
+import { Roles, RolesGuard } from "../auth/guard/role.guard";
 
-@SetMetadata('roles', ['ADMIN'])
+@Roles('ADMIN')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('/group')
 export class GroupController {
